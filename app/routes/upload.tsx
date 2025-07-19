@@ -7,7 +7,7 @@ import { generateUUID } from "~/lib/utils";
 import { prepareInstructions } from "../../constants";
 import FileUploader from "~/components/FileUploader";
 
-function Upload() {
+const Upload = () => {
   const { auth, isLoading, fs, ai, kv } = usePuterStore();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -63,8 +63,7 @@ function Upload() {
       uploadedFile.path,
       prepareInstructions({ jobTitle, jobDescription })
     );
-    if (!feedback) return setStatusText("Error: Failed to analyze resume"); 
-
+    if (!feedback) return setStatusText("Error: Failed to analyze resume");
     const feedbackText =
       typeof feedback.message.content === "string"
         ? feedback.message.content
@@ -73,7 +72,6 @@ function Upload() {
     data.feedback = JSON.parse(feedbackText);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText("Analysis complete, redirecting...");
-    console.log(data);
     navigate(`/resume/${uuid}`);
   };
 
@@ -155,6 +153,5 @@ function Upload() {
       </section>
     </main>
   );
-}
-
+};
 export default Upload;
